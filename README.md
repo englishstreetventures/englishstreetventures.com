@@ -13,4 +13,6 @@ Build the static site into `dist/` with `bun run build`. Preview the generated o
 
 ## Deploy
 
-`bun run deploy` builds the site and deploys the `englishstreetventures-com` Worker. Wrangler is configured for both the `workers.dev` preview URL and the `englishstreetventures.com` custom domain. Cloudflare account access and a configured domain are required for a live deployment.
+`bun run deploy` builds the site and deploys the `englishstreetventures-com` Worker to Cloudflare. Wrangler is configured for both the `workers.dev` preview URL and the `englishstreetventures.com` custom domain.
+
+GitHub Actions builds pull requests targeting `main` and deploys to production after changes reach `main`. Before the first deploy, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as secrets on the `production` GitHub Environment. Scope the API token to the Cloudflare account that owns this Worker and grant the Workers edit permission.
