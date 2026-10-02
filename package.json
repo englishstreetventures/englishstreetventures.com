@@ -1,0 +1,19 @@
+{
+  "name": "englishstreetventures-com",
+  "packageManager": "bun@1.4.2",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler dev --local",
+    "deploy": "bun run build && wrangler deploy"
+  },
+  "dependencies": {
+    "astro": "^5.14.1",
+    "web-haptics": "^0.0.6"
+  },
+  "devDependencies": {
+    "wrangler": "^4.37.0"
+  }
+}
