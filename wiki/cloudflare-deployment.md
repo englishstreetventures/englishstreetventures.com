@@ -20,9 +20,9 @@ This page records how the production Worker was bootstrapped and how to create t
 - GitHub Environment: `production`
 - Required Environment secrets: `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`
 
-The Worker was first created on 2026-10-03 using the existing Wrangler OAuth login for `admin@englishstventures.com`. `bunx wrangler whoami` identified the account. After `bun run build`, Wrangler deployed the static assets using a temporary config containing the Worker name, `workers_dev: true`, and `assets.directory: "./dist"`, with no `routes` entry. The temporary config was removed after deployment. The first deployment is available at [englishstreetventures-com.chavaniket.workers.dev](https://englishstreetventures-com.chavaniket.workers.dev); it did not attach the production domain.
+The Worker was first created on 2026-10-03 using the machine's existing authorized Wrangler OAuth login. `bunx wrangler whoami` identified the account. After `bun run build`, Wrangler deployed the static assets using a temporary config containing the Worker name, `workers_dev: true`, and `assets.directory: "./dist"`, with no `routes` entry. The temporary config was removed after deployment. The first deployment is available at [englishstreetventures-com.chavaniket.workers.dev](https://englishstreetventures-com.chavaniket.workers.dev); it did not attach the production domain.
 
-No dedicated Cloudflare API token was created during that bootstrap. GitHub Actions still needs its own token and account ID added to the `production` Environment before a push to `main` can deploy.
+No dedicated Cloudflare API token was created during that bootstrap. The repository owner later confirmed that `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` were added to the `production` GitHub Environment. The workflow checks that both values are present; a successful deploy is still needed to verify that the token permissions cover the configured Worker and domain route.
 
 ## Create the CI API token
 
@@ -39,7 +39,7 @@ Use an **Account API token**, not **My Profile → API Tokens**. Profile tokens 
 
 The token does not need Pages, D1, KV, R2, or user-management permissions. Cloudflare documents that deploying an existing Worker requires Editor for that Worker, while changing its route or custom domain also requires Workers Routes Write for the affected zone.
 
-The deploy job installs Bun and the lockfile-pinned Wrangler package before invoking `cloudflare/wrangler-action`. The action otherwise tries to install Wrangler itself; with this repository's Bun package manager it needs Bun available even in the separate deploy job.
+The deploy job installs Bun before invoking `cloudflare/wrangler-action`. The action detects this repository's Bun package manager and installs the pinned Wrangler version, so no application dependencies need to be installed again in the deploy job.
 
 ## Verify the bootstrap
 
