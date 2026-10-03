@@ -52,6 +52,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+
+      - name: Install Wrangler
+        run: bun install --frozen-lockfile
+
       - name: Restore built site
         uses: actions/download-artifact@v4
         with:
